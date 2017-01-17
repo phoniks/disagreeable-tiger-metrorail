@@ -1,0 +1,25 @@
+{
+  "author": "John Hopkins, Serafin Wesnidge",
+  "description": "Metrorail Application",
+  "name": "disagreeable-tiger-metrorail",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "knex": "^0.12.6",
+    "pg": "^6.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phoniks/disagreeable-tiger-metrorail.git"
+  },
+  "keywords": ["Metro", "MetroRail", "Rail"],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/phoniks/disagreeable-tiger-metrorail/issues"
+  },
+  "homepage": "https://github.com/phoniks/disagreeable-tiger-metrorail#readme"
+}
