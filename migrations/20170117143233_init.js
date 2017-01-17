@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
 
     table.string('name')
 
-    table.specificType('tickets', 'integer[]')
+    table.integer('ticket')
     .unsigned()
 
     table.integer('station')
