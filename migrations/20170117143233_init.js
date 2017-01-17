@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('people', table => {
+  return knex.schema.createTable('passengers', table => {
     table.increments('id')
     .unsigned()
     .primary()
@@ -44,10 +44,29 @@ exports.up = function(knex, Promise) {
     table.decimal('station')
     .unsigned()
   })
+  .createTable('tickets', table => {
+    table.increments('id')
+    .unsigned()
+    .primary()
+
+    table.integer('purchasedFromStation')
+    .unsigned()
+    .notNull()
+
+    table.integer('trainFor')
+    .unsigned()
+    .notNull()
+
+    table.integer('destinationStation')
+    .unsigned()
+    .notNull
+  })
 }
 
 exports.down = function(knex, Promise) {
-  return  knex.schema.dropTableIfExists('people')
+  return  knex.schema.dropTableIfExists('passengers')
           .dropTableIfExists('stations')
           .dropTableIfExists('trains')
+          .dropTableIfExists('people')
+          .dropTableIfExists('tickets')
 }
