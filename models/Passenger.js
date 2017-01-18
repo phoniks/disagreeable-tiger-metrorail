@@ -3,10 +3,11 @@
 // const Ticket = require('./Tickets.js')
 
 class Passenger{
-  constructor(name, station){
+  constructor(name, station, train){
     this._id = undefined
     this._name = name || ''
     this.tickets = []
+    this.currentTrain = train || undefined
     this.currentStation = station || undefined
   }
 
@@ -36,11 +37,11 @@ class Passenger{
     this._name = newName
   }
 
-  set getTrain(newTrain) {
+  set setTrain(newTrain) {
     this.currentTrain = newTrain
   }
   
-  set getStation(newStation) {
+  set setStation(newStation) {
     this.currentStation = newStation
   }
 
