@@ -1,10 +1,10 @@
 'use strict'
 
 class Ticket{
-  constructor(stationOrigin, stationDestination, train){
+  constructor(origin, destination, train){
     this._id = undefined
-    this._stationOrigin = stationOrigin
-    this._stationDestination = stationDestination
+    this._origin = origin
+    this._destination = destination
   }
 
   // Getters
@@ -12,15 +12,26 @@ class Ticket{
     return this._id
   }
 
-  get stationOrigin(){
-    return _stationOrigin
+  get origin(){
+    return _origin
   }
 
-  get stationDestination(){
-    return _stationDestination
+  get destination(){
+    return _destination
   }
 
   // Setters
+  set id(newId){
+    return this._id = newId
+  }
+
+  set origin(newStation){
+    return _origin = newStation
+  }
+
+  set destination(newStation){
+    return _destination = newStation
+  }
 
   // Methods
 
