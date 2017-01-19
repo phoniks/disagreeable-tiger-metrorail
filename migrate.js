@@ -15,20 +15,19 @@ sequelize
   })
 
 
-require('./db/index.js')
-// const Trains = sequelize.import('./db/trains.js')
-// const Passengers = sequelize.import('./db/passengers.js')
-// const Tickets = sequelize.import('./db/tickets.js')
-// const Stations = sequelize.import('./db/stations.js')
-// const models = {Trains, Passengers, Tickets, Stations}
-//
-// Trains.associate(models)
-// Passengers.associate(models)
-// Tickets.associate(models)
-// Stations.associate(models)
-//
-// console.log('MODELS', models)
+require('./migrations/index.js')
+const Trains = sequelize.import('./migrations/trains.js')
+const Passengers = sequelize.import('./migrations/passengers.js')
+const Tickets = sequelize.import('./migrations/tickets.js')
+const Stations = sequelize.import('./migrations/stations.js')
+const models = {Trains, Passengers, Tickets, Stations}
 
-sequelize.sync({force: true}).then( _ => {
-  console.log('Done sync\'ing')
+Promise.all([
+  Trains.associate(models),
+  Stations.associate(models),
+  Tickets.associate(models)
+]).then( _ => {
+  sequelize.sync({force: true}).then( _ => {
+    console.log('Done sync\'ing')
+  })
 })

@@ -1,13 +1,22 @@
 {
   "development": {
+    "database": "metrorail",
+    "username": null,
+    "password": null,
     "dialect": "postgres",
     "port": 5432
   },
   "test": {
+    "database": "metrorail",
+    "username": null,
+    "password": null,
     "dialect": "postgres",
     "port": 5432
   },
   "production": {
+    "database": "metrorail",
+    "username": null,
+    "password": null,
     "dialect": "postgres",
     "port": 5432
   }

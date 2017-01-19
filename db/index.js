@@ -1,38 +1,28 @@
-"use strict"
+'use strict'
 
-const fs        = require("fs")
-const path      = require("path")
-const Sequelize = require("sequelize")
-const env       = process.env.NODE_ENV || "development"
-const config    = require(path.join(__dirname, '..', 'config', 'config.json'))[env]
+var Sequelize = require('sequelize')
+var sequelize = new Sequelize('metrorail', null, null, {
+      dialect: "postgres",
+      port: 5432,
+    })
 
-if (process.env.DATABASE_URL) {
-  var sequelize = new Sequelize(process.env.DATABASE_URL,config)
-} else {
-  var sequelize = new Sequelize(config.database, config.username, config.password, config)
-}
-const db = {}
-
-fs
-  .readdirSync(__dirname)
-  .filter(function(file) {
-    return (file.indexOf(".") !== 0) && (file !== "index.js")
-  })
-  .forEach(function(file) {
-    var model = sequelize.import(path.join(__dirname, file))
-    db[model.name] = model
+sequelize
+  .authenticate()
+  .then(function(err) {
+    console.log('Connection has been established successfully.')
+  }, function (err) {
+    console.log('Unable to connect to the database:', err)
   })
 
-Object.keys(db).forEach(function(modelName) {
-  if ("associate" in db[modelName]) {
-    db[modelName].associate(db)
-  }
-})
 
-db.sequelize = sequelize
-db.Sequelize = Sequelize
+const db = {sequelize, Sequelize}
+const Tickets = db.sequelize.import("../migrations/tickets.js")
+const Stations = db.sequelize.import("../migrations/stations.js")
+const Trains = db.sequelize.import("../migrations/trains.js")
+const Passengers = db.sequelize.import("../migrations/passengers.js")
 
-db.getPassengers = options => {
+db.getPassengers = (options={}) => {
+  console.log("I\'M RUNNING TOO");
   if(options.ticketId){
 
   }
@@ -49,6 +39,37 @@ db.create = (options={}) => {
       console.log("I\'M HERE NOW");
       options.cb(instance.dataValues.id)
     })
+  }
+}
+
+db.update = (type, data, callback) => {
+  const createType = {
+    'passenger': Passengers,
+    'station': Stations,
+    'train': Trains,
+    'ticket': Tickets
+  }
+
+  data = data || {id: undefined}
+  console.log('DATA', data)
+  if(type){
+    createType[type].findOrCreate({where: {id: data.id}})
+    .spread( (value, created) => {
+      console.log("VALUE:", value.get({
+        plain: true
+      }))
+      console.log("CREATED:", created)
+    })
+      /*
+        {
+          username: 'sdepold',
+          job: 'Technical Lead JavaScript',
+          id: 1,
+          createdAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET),
+          updatedAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET)
+        }
+        created: true
+      */
   }
 }
 

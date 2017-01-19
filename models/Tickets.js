@@ -15,9 +15,8 @@ class Ticket{
     // Derived
     this.owner = owner
     this.train = train
-    db.create({obj: 'ticket', destination, cb: id => {
-      this._id = id
-    }})
+    // db.getPassengers()
+    db.update('ticket', this)
   }
 
   // Getters
@@ -27,15 +26,18 @@ class Ticket{
 
   // Setters
   set id(newId){
-    console.error('Cannot change id, will break database')
+    this._id = newId
   }
 
   // Methods
 
 }
 
-let george = new Ticket()
-console.log("George: ", george);
+db.sequelize.sync().then( _ => {
+  console.log("I\'M SYNCHED!");
+  let george = new Ticket()
+  console.log("George: ", george);
+})
 
 module.exports = {
   Ticket
