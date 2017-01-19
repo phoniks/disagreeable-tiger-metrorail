@@ -21,6 +21,13 @@ const Stations = db.sequelize.import("../migrations/stations.js")
 const Trains = db.sequelize.import("../migrations/trains.js")
 const Passengers = db.sequelize.import("../migrations/passengers.js")
 
+const stringToType = {
+  'passenger': Passengers,
+  'station': Stations,
+  'train': Trains,
+  'ticket': Tickets
+}
+
 db.getPassengers = (options={}) => {
   console.log("I\'M RUNNING TOO");
   if(options.ticketId){
@@ -43,38 +50,39 @@ db.create = (options={}) => {
 }
 
 db.update = (type, data, callback) => {
-  const createType = {
-    'passenger': Passengers,
-    'station': Stations,
-    'train': Trains,
-    'ticket': Tickets
-  }
-
   data = data || {id: undefined}
-  console.log('DATA', data)
   if(type){
-    createType[type].findOrCreate({where: {id: data.id}})
-    .spread( (value, created) => {
-      console.log("VALUE:", value.get({
-        plain: true
-      }))
+    stringToType[type].findOrCreate({where: {id: data.id}})
+    .spread( (instance, created) => {
+      console.log('INSTANCE:', instance.update)
       console.log("CREATED:", created)
+      instance.update({
+        destination_id: '3B43b299-6bf3-49c4-b3ad-b67a6f4d2ed4'
+      })
     })
-      /*
-        {
-          username: 'sdepold',
-          job: 'Technical Lead JavaScript',
-          id: 1,
-          createdAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET),
-          updatedAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET)
-        }
-        created: true
-      */
   }
 }
 
-db.findAll = options => {
+db.findAll = (type, where, is, callback) => {
+  const searchable = {}
+  searchable[where] = is
+  if(type){
+    stringToType[type].findAll({where: searchable})
+    .then( instance => {
+      callback(instance)
+    })
+  }
+}
 
+db.findOne = (type, where, is, callback) => {
+  const searchable = {}
+  searchable[where] = is
+  if(type){
+    stringToType[type].find({where: searchable})
+    .then( instance => {
+      callback(instance)
+    })
+  }
 }
 // findAll(table, whereSomething, equalsSomething)
 
