@@ -51,16 +51,33 @@ db.create = (options={}) => {
 
 db.update = (type, data, callback) => {
   data = data || {id: undefined}
-  if(type){
-    stringToType[type].findOrCreate({where: {id: data.id}})
-    .spread( (instance, created) => {
-      console.log('INSTANCE:', instance.update)
-      console.log("CREATED:", created)
-      instance.update({
-        destination_id: '3B43b299-6bf3-49c4-b3ad-b67a6f4d2ed4'
-      })
-    })
+
+  const updateFields = {}
+  if(type === 'train'){
+    updateFields['id'] = data.id
+    updateFields['capacity'] = data.capacity
+    updateFields['station_id'] = data.station_id
+  } else if(type === 'passenger') {
+    updateFields['id'] = data.id
+    updateFields['name'] = data.name
+    updateFields['train_id'] = data.train_id
+    updateFields['station_id'] = data.station_id
+    updateFields['ticket_id'] = data.ticket_id
+  } else if(type === 'ticket') {
+    updateFields['id'] = data.id
+    updateFields['destionation_id'] = data.destionation_id
+  } else {
+    updateFields['id'] = data.id
+    updateFields['location'] = data.location
+    updateFields['next_station_id'] = data.next_station_id
   }
+
+  stringToType[type].findOrCreate({where: {id: data.id}})
+  .spread( (instance, created) => {
+    console.log('INSTANCE:', instance.update)
+    console.log("CREATED:", created)
+    instance.update(updateFields)
+  })
 }
 
 db.findAll = (type, where, is, callback) => {
