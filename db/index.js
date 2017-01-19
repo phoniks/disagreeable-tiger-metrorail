@@ -33,4 +33,27 @@ Object.keys(db).forEach(function(modelName) {
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 
+db.getPassengers = options => {
+  if(options.ticketId){
+
+  }
+}
+
+db.create = options => {
+  if(options.obj == 'ticket'){
+    Tickets.create({destination_id: destination})
+    .error( err => {
+      console.error("ERROR: ", err);
+    })
+    .then( instance => {
+      options.cb(instance.dataValues.id)
+    })
+  }
+}
+
+db.findAll = options => {
+
+}
+// findAll(table, whereSomething, equalsSomething)
+
 module.exports = db
