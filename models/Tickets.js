@@ -1,10 +1,24 @@
 'use strict'
 
+const db = require('../db/index.js')
+
 class Ticket{
-  constructor(origin, destination, train){
+  constructor(options={}){
+
+    const {owner, train, destination} = options
+
+    // Database matching
     this._id = undefined
-    this._origin = origin
-    this._destination = destination
+    this.destination = destination
+
+
+    // Derived
+    this.owner = owner
+    this.train = train
+
+    db.create({obj: 'ticket', destination, cb: id => {
+      this._id = id
+    }})
   }
 
   // Getters
@@ -12,31 +26,18 @@ class Ticket{
     return this._id
   }
 
-  get origin(){
-    return _origin
-  }
-
-  get destination(){
-    return _destination
-  }
-
   // Setters
   set id(newId){
-    return this._id = newId
-  }
-
-  set origin(newStation){
-    return _origin = newStation
-  }
-
-  set destination(newStation){
-    return _destination = newStation
+    console.error('Cannot change id, will break database')
+    // return this._id = newId
   }
 
   // Methods
 
-
 }
+
+let george = new Ticket()
+console.log("George: ", george);
 
 module.exports = {
   Ticket

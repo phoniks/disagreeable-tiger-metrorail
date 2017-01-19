@@ -8,7 +8,9 @@
     "knex": "^0.12.6",
     "pg": "^6.1.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "util": "^0.10.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dbup": "node dbUp.js"
@@ -17,7 +19,11 @@
     "type": "git",
     "url": "git+https://github.com/phoniks/disagreeable-tiger-metrorail.git"
   },
-  "keywords": ["Metro", "MetroRail", "Rail"],
+  "keywords": [
+    "Metro",
+    "MetroRail",
+    "Rail"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/phoniks/disagreeable-tiger-metrorail/issues"
