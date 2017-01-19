@@ -1,21 +1,21 @@
 module.exports = function(sequelize, DataTypes) {
-  return Tickets = sequelize.define('tickets', {
+  return Trains = sequelize.define('trains', {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false
     },
-    deleteme: {
-      type: DataTypes.INTEGER
+    capacity: {
+      type: DataTypes.INTEGER,
     }
   }, {
     underscored: true,
     timestamps: false,
     classMethods: {
       associate: models => {
-        Tickets.hasOne(Passengers, {as: 'ticket', constraints: false})
-        Tickets.belongsTo(Stations, {as: 'destination', constraints: false})
+        Trains.hasMany(Passengers, {as: 'train'})
+        Trains.belongsTo(Stations, {as: 'station'})
       }
     }
   })

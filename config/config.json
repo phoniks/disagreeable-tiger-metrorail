@@ -1,0 +1,14 @@
+{
+  "development": {
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "test": {
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "production": {
+    "dialect": "postgres",
+    "port": 5432
+  }
+}
