@@ -19,7 +19,6 @@ fs
     return (file.indexOf(".") !== 0) && (file !== "index.js")
   })
   .forEach(function(file) {
-    console.log('FILE', file)
     var model = sequelize.import(path.join(__dirname, file))
     db[model.name] = model
   })
@@ -39,13 +38,15 @@ db.getPassengers = options => {
   }
 }
 
-db.create = options => {
+db.create = (options={}) => {
+  const {destination} = options
   if(options.obj == 'ticket'){
     Tickets.create({destination_id: destination})
     .error( err => {
       console.error("ERROR: ", err);
     })
     .then( instance => {
+      console.log("I\'M HERE NOW");
       options.cb(instance.dataValues.id)
     })
   }

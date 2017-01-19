@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       allowNull: false
     },
-    deleteme: {
+    d: {
       type: DataTypes.INTEGER
     }
   }, {
@@ -14,8 +14,8 @@ module.exports = function(sequelize, DataTypes) {
     timestamps: false,
     classMethods: {
       associate: models => {
-        Tickets.hasOne(Passengers, {as: 'ticket', constraints: false})
-        Tickets.belongsTo(Stations, {as: 'destination', constraints: false})
+        Tickets.hasOne(models.passengers, {as: 'ticket', constraints: false})
+        Tickets.belongsTo(models.stations, {as: 'destination', constraints: false})
       }
     }
   })

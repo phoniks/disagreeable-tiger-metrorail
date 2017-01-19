@@ -14,8 +14,8 @@ module.exports = function(sequelize, DataTypes) {
     timestamps: false,
     classMethods: {
       associate: models => {
-        Trains.hasMany(Passengers, {as: 'train'})
-        Trains.belongsTo(Stations, {as: 'station'})
+        Trains.hasMany(models.passengers, {as: 'train'})
+        Trains.belongsTo(models.stations, {as: 'station'})
       }
     }
   })

@@ -12,8 +12,8 @@
     "util": "^0.10.3"
   },
   "scripts": {
-    "test": "node modules/Tickets.js",
-    "migrate": "node dbUp.js"
+    "test": "node models/Tickets.js",
+    "migrate": "node migrate.js"
   },
   "repository": {
     "type": "git",

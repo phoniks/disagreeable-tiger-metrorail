@@ -15,7 +15,6 @@ class Ticket{
     // Derived
     this.owner = owner
     this.train = train
-
     db.create({obj: 'ticket', destination, cb: id => {
       this._id = id
     }})
