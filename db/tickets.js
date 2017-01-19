@@ -8,12 +8,12 @@ var sequelize = new Sequelize('metrorail', null, null, {
 sequelize
 .authenticate()
 .then(function(err) {
-  console.log('Connection has been established successfully.')
+  console.log('Connection has been established successfully2.')
 }, function (err) {
   console.log('Unable to connect to the database:', err)
 })
 
-const {Trains, Passengers, Stations, Tickets} = require('../dbUp')
+const {Trains, Passengers, Stations, Tickets} = require('./models')
 
 
 getPassengers = options => {
@@ -24,9 +24,12 @@ getPassengers = options => {
 
 create = options => {
   if(options.obj == 'ticket'){
-    return Tickets.create({destionation_id: options.destination}).then( ticket => {
-      ticket.save()
-      return ticket.dataValues.id
+    Tickets.create({destination_id: destination})
+    .error( err => {
+      console.error("ERROR: ", err);
+    })
+    .then( instance => {
+      options.cb(instance.dataValues.id)
     })
   }
 }

@@ -14,69 +14,14 @@ sequelize
     console.log('Unable to connect to the database:', err)
   })
 
-const Trains = sequelize.define('trains', {
-  id: {
-    type: Sequelize.UUID,
-    primaryKey: true,
-    defaultValue: Sequelize.UUIDV4,
-    allowNull: false
-  },
-  capacity: {
-    type: Sequelize.INTEGER,
-  }
-}, {
-  underscored: true,
-  timestamps: false
-})
+const {Trains, Stations, Passengers, Tickets} = require('./models')
 
-const Passengers = sequelize.define('passengers', {
-  id: {
-    type: Sequelize.UUID,
-    primaryKey: true,
-    defaultValue: Sequelize.UUIDV4,
-    allowNull: false
-  },
-  name: {
-    type: Sequelize.TEXT,
-  }
-}, {
-  underscored: true,
-  timestamps: false
-})
-
-const Tickets = sequelize.define('tickets', {
-  id: {
-    type: Sequelize.UUID,
-    primaryKey: true,
-    defaultValue: Sequelize.UUIDV4,
-    allowNull: false
-  }
-}, {
-  underscored: true,
-  timestamps: false
-})
-
-const Stations = sequelize.define('stations', {
-  id: {
-    type: Sequelize.UUID,
-    primaryKey: true,
-    defaultValue: Sequelize.UUIDV4,
-    allowNull: false
-  },
-  location: {
-    type: Sequelize.TEXT,
-  }
-}, {
-  underscored: true,
-  timestamps: false
-})
-
-// Tickets.hasOne(Passengers, {as: 'ticket', constraints: false})
-// Stations.hasMany(Passengers, {as: 'station'})
-// Trains.hasMany(Passengers, {as: 'train'})
-// Tickets.belongsTo(Stations, {as: 'destination', constraints: false})
-// Trains.belongsTo(Stations, {as: 'station'})
-// Stations.belongsTo(Stations, {as: 'nextStation'})
+Tickets.hasOne(Passengers, {as: 'ticket', constraints: false})
+Stations.hasMany(Passengers, {as: 'station'})
+Trains.hasMany(Passengers, {as: 'train'})
+Tickets.belongsTo(Stations, {as: 'destination', constraints: false})
+Trains.belongsTo(Stations, {as: 'station'})
+Stations.belongsTo(Stations, {as: 'nextStation'})
 
 sequelize.sync({force: true}).then( _ => {
   console.log('Done sync\'ing')
