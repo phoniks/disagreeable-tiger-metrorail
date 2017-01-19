@@ -91,6 +91,8 @@ const Stations = sequelize.define('stations', {
   underscored: true
 })
 
+
+
 Tickets.hasOne(Passengers, {as: 'ticket'})
 Stations.hasMany(Passengers, {as: 'station'})
 Trains.hasMany(Passengers, {as: 'train'})
