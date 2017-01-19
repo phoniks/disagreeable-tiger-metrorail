@@ -29,7 +29,6 @@ class Ticket{
   // Setters
   set id(newId){
     console.error('Cannot change id, will break database')
-    // return this._id = newId
   }
 
   // Methods

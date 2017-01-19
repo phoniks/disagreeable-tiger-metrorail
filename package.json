@@ -12,7 +12,8 @@
     "util": "^0.10.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node modules/Tickets.js",
+    "migrate": "node dbUp.js"
   },
   "repository": {
     "type": "git",
