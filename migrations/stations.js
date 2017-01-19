@@ -19,7 +19,6 @@ module.exports = function(sequelize, DataTypes) {
           Stations.belongsTo(models.Stations, {as: 'nextStation'})
         ])
       }
-
     }
   })
 }
