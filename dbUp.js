@@ -25,8 +25,6 @@ Passengers.associate(models)
 Tickets.associate(models)
 Stations.associate(models)
 
-console.log('MODELS', models)
-
 sequelize.sync({force: true}).then( _ => {
   console.log('Done sync\'ing')
 })
