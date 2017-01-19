@@ -14,21 +14,21 @@ sequelize
     console.log('Unable to connect to the database:', err)
   })
 
-const {Trains, Stations, Passengers, Tickets} = require('./models')
+const Trains = sequelize.import('./db/trains.js')
+const Passengers = sequelize.import('./db/passengers.js')
+const Tickets = sequelize.import('./db/tickets.js')
+const Stations = sequelize.import('./db/stations.js')
+const models = {Trains, Passengers, Tickets, Stations}
 
-
-
-Tickets.hasOne(Passengers, {as: 'ticket'})
-Stations.hasMany(Passengers, {as: 'station'})
-Trains.hasMany(Passengers, {as: 'train'})
-Tickets.belongsTo(Stations, {as: 'destination', constraints: false})
-Trains.belongsTo(Stations, {as: 'station'})
-Stations.belongsTo(Stations, {as: 'nextStation'})
+Trains.associate(models)
+Passengers.associate(models)
+Tickets.associate(models)
+Stations.associate(models)
 
 sequelize.sync({force: true}).then( _ => {
   console.log('Done sync\'ing')
 })
 
-module.exports = {
-  Tickets, Stations, Trains, Passengers
-}
+// module.exports = {
+//   Tickets, Stations, Trains, Passengers
+// }
