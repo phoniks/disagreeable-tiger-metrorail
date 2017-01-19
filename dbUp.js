@@ -16,7 +16,9 @@ sequelize
 
 const {Trains, Stations, Passengers, Tickets} = require('./models')
 
-Tickets.hasOne(Passengers, {as: 'ticket', constraints: false})
+
+
+Tickets.hasOne(Passengers, {as: 'ticket'})
 Stations.hasMany(Passengers, {as: 'station'})
 Trains.hasMany(Passengers, {as: 'train'})
 Tickets.belongsTo(Stations, {as: 'destination', constraints: false})
