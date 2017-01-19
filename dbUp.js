@@ -1,7 +1,7 @@
 'use strict'
 
 var Sequelize = require('sequelize')
-var sequelize = new Sequelize('sample', null, null, {
+var sequelize = new Sequelize('metrorail', null, null, {
       dialect: "postgres",
       port: 5432,
     })
@@ -101,3 +101,7 @@ Stations.belongsTo(Stations, {as: 'nextStation'})
 sequelize.sync({force: true}).then( _ => {
   console.log('Done sync\'ing')
 })
+
+module.exports = {
+  sequelize, Sequelize, Tickets, Stations, Trains, Passengers
+}
