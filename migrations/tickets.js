@@ -1,21 +1,20 @@
 module.exports = function(sequelize, DataTypes) {
-  return Stations = sequelize.define('stations', {
+  return Tickets = sequelize.define('tickets', {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false
-    },
-    location: {
-      type: DataTypes.TEXT,
     }
   }, {
     underscored: true,
     timestamps: false,
     classMethods: {
       associate: models => {
-        Stations.hasMany(Passengers, {as: 'station'})
-        Stations.belongsTo(Stations, {as: 'nextStation'})
+        return Promise.all([
+          Tickets.hasOne(models.Passengers, {as: 'ticket', constraints: false}),
+          Tickets.belongsTo(models.Stations, {as: 'destination', constraints: false})
+        ])
       }
     }
   })

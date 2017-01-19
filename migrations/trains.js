@@ -14,8 +14,10 @@ module.exports = function(sequelize, DataTypes) {
     timestamps: false,
     classMethods: {
       associate: models => {
-        Trains.hasMany(Passengers, {as: 'train'})
-        Trains.belongsTo(Stations, {as: 'station'})
+        return Promise.all([
+          Trains.hasMany(models.Passengers, {as: 'train'}),
+          Trains.belongsTo(models.Stations, {as: 'station'})
+        ])
       }
     }
   })
