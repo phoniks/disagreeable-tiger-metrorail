@@ -23,15 +23,10 @@ const Trains = sequelize.define('trains', {
   },
   capacity: {
     type: Sequelize.INTEGER,
-  },
-  created_at: {
-    type: Sequelize.DATE,
-    allowNull: false
-  },
-  updated_at:  Sequelize.DATE,
-  deleted_at: Sequelize.DATE
+  }
 }, {
-  underscored: true
+  underscored: true,
+  timestamps: false
 })
 
 const Passengers = sequelize.define('passengers', {
@@ -43,15 +38,10 @@ const Passengers = sequelize.define('passengers', {
   },
   name: {
     type: Sequelize.TEXT,
-  },
-  created_at: {
-    type: Sequelize.DATE,
-    allowNull: false
-  },
-  updated_at:  Sequelize.DATE,
-  deleted_at: Sequelize.DATE
+  }
 }, {
-  underscored: true
+  underscored: true,
+  timestamps: false
 })
 
 const Tickets = sequelize.define('tickets', {
@@ -60,15 +50,10 @@ const Tickets = sequelize.define('tickets', {
     primaryKey: true,
     defaultValue: Sequelize.UUIDV4,
     allowNull: false
-  },
-  created_at: {
-    type: Sequelize.DATE,
-    allowNull: false
-  },
-  updated_at:  Sequelize.DATE,
-  deleted_at: Sequelize.DATE
+  }
 }, {
-  underscored: true
+  underscored: true,
+  timestamps: false
 })
 
 const Stations = sequelize.define('stations', {
@@ -80,28 +65,23 @@ const Stations = sequelize.define('stations', {
   },
   location: {
     type: Sequelize.TEXT,
-  },
-  created_at: {
-    type: Sequelize.DATE,
-    allowNull: false
-  },
-  updated_at:  Sequelize.DATE,
-  deleted_at: Sequelize.DATE
+  }
 }, {
-  underscored: true
+  underscored: true,
+  timestamps: false
 })
 
-Tickets.hasOne(Passengers, {as: 'ticket'})
-Stations.hasMany(Passengers, {as: 'station'})
-Trains.hasMany(Passengers, {as: 'train'})
-Tickets.belongsTo(Stations, {as: 'destination', constraints: false})
-Trains.belongsTo(Stations, {as: 'station'})
-Stations.belongsTo(Stations, {as: 'nextStation'})
+// Tickets.hasOne(Passengers, {as: 'ticket', constraints: false})
+// Stations.hasMany(Passengers, {as: 'station'})
+// Trains.hasMany(Passengers, {as: 'train'})
+// Tickets.belongsTo(Stations, {as: 'destination', constraints: false})
+// Trains.belongsTo(Stations, {as: 'station'})
+// Stations.belongsTo(Stations, {as: 'nextStation'})
 
 sequelize.sync({force: true}).then( _ => {
   console.log('Done sync\'ing')
 })
 
 module.exports = {
-  sequelize, Sequelize, Tickets, Stations, Trains, Passengers
+  Tickets, Stations, Trains, Passengers
 }

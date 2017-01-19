@@ -1,6 +1,7 @@
 'use strict'
 
 const db = require('../db/index.js')
+const {sequelize} = require('../dbUp.js')
 
 class Ticket{
   constructor(options={}){
@@ -19,9 +20,9 @@ class Ticket{
     db.create({obj: 'ticket', destination})
     .then( id => {
       this._id = id
-      db.getPassengers({ticketId: id}, passenger => {
-       this.owner = passenger
-      })
+      // db.getPassengers({ticketId: id}, passenger => {
+      //  this.owner = passenger
+      // })
     })
   }
 
