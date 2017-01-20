@@ -22,10 +22,10 @@ const Trains = db.sequelize.import("../migrations/trains.js")
 const Passengers = db.sequelize.import("../migrations/passengers.js")
 
 const stringToType = {
-  'passenger': Passengers,
-  'station': Stations,
-  'train': Trains,
-  'ticket': Tickets
+  'Passengers': Passengers,
+  'Stations': Stations,
+  'Trains': Trains,
+  'Tickets': Tickets
 }
 
 db.getPassengers = (options={}) => {
@@ -50,33 +50,58 @@ db.create = (options={}) => {
 }
 
 db.update = (type, data, callback) => {
-  data = data || {id: undefined}
+  console.log('THE DATA OBJECT', data)
+  // data = data || {id: undefined}
 
-  const updateFields = {}
-  if(type === 'train'){
+  const updateFields = {associations: []}
+  if(type === 'Trains'){
     updateFields['id'] = data.id
     updateFields['capacity'] = data.capacity
     updateFields['station_id'] = data.station_id
-  } else if(type === 'passenger') {
+    // if(data.station_id){
+    //   updateFields.associations.push(data.station_id)
+    // }
+
+  } else if(type === 'Passengers') {
     updateFields['id'] = data.id
     updateFields['name'] = data.name
     updateFields['train_id'] = data.train_id
     updateFields['station_id'] = data.station_id
     updateFields['ticket_id'] = data.ticket_id
-  } else if(type === 'ticket') {
+    // if(data.train_id){
+    //   updateFields.associations.push(data.train_id)
+    // }
+    // if(data.station_id){
+    //   updateFields.associations.push(data.station_id)
+    // }
+    // if(data.ticket_id){
+    //   updateFields.associations.push(data.ticket_id)
+    // }
+  } else if(type === 'Tickets') {
     updateFields['id'] = data.id
     updateFields['destionation_id'] = data.destionation_id
+    // if(data.destionation_id){
+    //   updateFields.associations.push(data.destionation_id)
+    // }
   } else {
     updateFields['id'] = data.id
     updateFields['location'] = data.location
     updateFields['next_station_id'] = data.next_station_id
+    // if(data.next_station_id){
+    //   updateFields.associations.push(data.next_station_id)
+    // }
   }
+
+  console.log('UPDATEFIELDS:', updateFields)
 
   stringToType[type].findOrCreate({where: {id: data.id}})
   .spread( (instance, created) => {
-    console.log('INSTANCE:', instance.update)
     console.log("CREATED:", created)
     instance.update(updateFields)
+      .then( result => {
+        data.id = result.dataValues.id
+        callback(result)
+      })
   })
 }
 

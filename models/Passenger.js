@@ -1,5 +1,9 @@
-export default class Passenger{
-  constructor(options){
+'use strict'
+const db = require('../db/index.js')
+
+class Passenger{
+  constructor(options={}){
+    const {id, name, ticket, station} = options
     this._id = options.id,
     this.name = options.name,
     this._ticket = options.ticket,
@@ -9,12 +13,30 @@ export default class Passenger{
   get id(){
     return this._id
   }
+
+  set id(newId){
+    this._id = newId
+  }
+
+  get ticket_id(){
+    return this._ticket
+  }
+
+  set ticket_id(newId){
+    this._ticket = newId
+  }
+
+  set station_id(station){
+    this._station = station
+  }
+
+  get station_id(){
+    return this._station
+  }
+
 // get the name of a particular passenger.
 // get a particular passenger's ticket.
 // set the current station of a particular passenger.
-  set station(station){
-    this._station = station
-  }
 // buy a ticket for a particular passenger from their current station to another specified station.
   buyTicket(destination){
     return Ticket.purchase(this, destination)
@@ -44,8 +66,9 @@ export default class Passenger{
     return db.findAll( 'Passengers', 'station', station_id )
   }
 // find all passengers on a train.
-  static passengersOnTrain(train_id)
+  static passengersOnTrain(train_id){
     return db.findAll( 'Passengers','train', train_id )
+  }
 // create a new passenger.
 // save new passengers to the database.
   save(){
@@ -53,10 +76,16 @@ export default class Passenger{
   }
 // update existing passengers in the database.
   update(){
-    db.update('Trains', this.id, this)
+    db.update('Passengers', this, ( result => {
+      console.log("TEST CALLBACK 1:");
+    }))
   }
 // delete a passenger from the database.
   delete(){
     db.delete( this.id )
   }
+}
+
+module.exports = {
+  Passenger
 }
