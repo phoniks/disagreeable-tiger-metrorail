@@ -1,10 +1,11 @@
 'use strict'
+const db = require('../db/index.js')
 
 class Ticket{
-  constructor(origin, destination, train){
-    this._id = undefined
-    this._origin = origin
-    this._destination = destination
+  constructor(options={}){
+    const {owner, train, destination_id, id} = options
+    this._id = id
+    this.destination_id = destination_id
   }
 
   // Getters
@@ -12,30 +13,17 @@ class Ticket{
     return this._id
   }
 
-  get origin(){
-    return _origin
-  }
-
-  get destination(){
-    return _destination
-  }
-
   // Setters
   set id(newId){
-    return this._id = newId
-  }
-
-  set origin(newStation){
-    return _origin = newStation
-  }
-
-  set destination(newStation){
-    return _destination = newStation
+    this._id = newId
   }
 
   // Methods
-
-
+  update(){
+    db.update('Tickets', this, ( result => {
+      console.log("TEST CALLBACK 1:");
+    }))
+  }
 }
 
 module.exports = {

@@ -12,8 +12,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: models => {
         return Promise.all([
-          Tickets.hasOne(models.Passengers, {as: 'ticket', constraints: false}),
-          Tickets.belongsTo(models.Stations, {as: 'destination', constraints: false})
+          Tickets.hasOne(models.Passengers, {as: 'ticket'}),
+          Tickets.belongsTo(models.Stations, {as: 'destination'})
         ])
       }
     }

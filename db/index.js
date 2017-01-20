@@ -1,5 +1,7 @@
 'use strict'
 
+const getFields = require('./getFields')
+
 var Sequelize = require('sequelize')
 var sequelize = new Sequelize('metrorail', null, null, {
       dialect: "postgres",
@@ -14,68 +16,70 @@ sequelize
     console.log('Unable to connect to the database:', err)
   })
 
-
 const db = {sequelize, Sequelize}
 const Tickets = db.sequelize.import("../migrations/tickets.js")
 const Stations = db.sequelize.import("../migrations/stations.js")
 const Trains = db.sequelize.import("../migrations/trains.js")
 const Passengers = db.sequelize.import("../migrations/passengers.js")
 
-db.getPassengers = (options={}) => {
-  console.log("I\'M RUNNING TOO");
-  if(options.ticketId){
-
-  }
+const stringToType = {
+  'Passengers': Passengers,
+  'Stations': Stations,
+  'Trains': Trains,
+  'Tickets': Tickets
 }
 
-db.create = (options={}) => {
-  const {destination} = options
-  if(options.obj == 'ticket'){
-    Tickets.create({destination_id: destination})
-    .error( err => {
-      console.error("ERROR: ", err);
-    })
-    .then( instance => {
-      console.log("I\'M HERE NOW");
-      options.cb(instance.dataValues.id)
-    })
-  }
+const typeToAssociations = {
+  'Tickets':  [Tickets.hasOne(Passengers, {as: 'ticket'}),
+              Tickets.belongsTo(Stations, {as: 'destination'})],
+  'Stations': [Stations.hasMany(Passengers, {as: 'station'}),
+              Stations.belongsTo(Stations, {as: 'nextStation'})],
+  'Trains':   [Trains.hasMany(Passengers, {as: 'train'}),
+              Trains.belongsTo(Stations, {as: 'station'})],
+  'Passengers':  null
 }
 
 db.update = (type, data, callback) => {
-  const createType = {
-    'passenger': Passengers,
-    'station': Stations,
-    'train': Trains,
-    'ticket': Tickets
-  }
-
   data = data || {id: undefined}
-  console.log('DATA', data)
+  const updateFields = getFields(type)
+
+  stringToType[type].findOrCreate({where: {id: data.id}, include: typeToAssociations[type]})
+  .spread( (instance, created) => {
+    console.log("CREATED:", created)
+    instance.update(updateFields)
+      .then( result => {
+        data.id = result.dataValues.id
+        callback(result)
+      })
+  })
+}
+
+db.findAll = (type, where, is, callback) => {
+  const searchable = {}
+  searchable[where] = is
   if(type){
-    createType[type].findOrCreate({where: {id: data.id}})
-    .spread( (value, created) => {
-      console.log("VALUE:", value.get({
-        plain: true
-      }))
-      console.log("CREATED:", created)
+    stringToType[type].findAll({where: searchable})
+    .then( instance => {
+      const arrayOfDataValues = instance.map( _ => {
+        return instance.dataValues
+      })
+      callback(arrayOfDataValues)
     })
-      /*
-        {
-          username: 'sdepold',
-          job: 'Technical Lead JavaScript',
-          id: 1,
-          createdAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET),
-          updatedAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET)
-        }
-        created: true
-      */
   }
 }
 
-db.findAll = options => {
-
+db.findOne = (type, where, is, callback) => {
+  const searchable = {}
+  searchable[where] = is
+  if(type){
+    stringToType[type].find({where: searchable})
+    .then( instance => {
+      callback(instance.dataValues)
+    })
+  }
 }
-// findAll(table, whereSomething, equalsSomething)
 
 module.exports = db
+
+
+// db.update('Passengers', {id: '7b6be0f8-5754-4953-a893-63da994f8176', ticket_id: '8edf9b74-b9ea-417d-8c62-0aaeda4ff870'}, result => {myResult1 = result})
