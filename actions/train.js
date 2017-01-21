@@ -1,9 +1,9 @@
-function createTrain(trains){
-  console.log('TRAINS ACTION', trains)
+function createTrain(Trains){
+  console.log('TRAINS ACTION', Trains)
 
   return {
     type: 'CREATE_TRAIN',
-    trains
+    Trains
   }
 }
 

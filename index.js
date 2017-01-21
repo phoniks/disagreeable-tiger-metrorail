@@ -1,7 +1,7 @@
 const { createStore } = require('redux')
-const {trainReducer} = require('./reducers')
+const {rootReducer} = require('./reducers')
 
-let store = createStore(trainReducer)
+let store = createStore(rootReducer)
 
 module.exports = {
   store

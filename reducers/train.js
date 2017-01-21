@@ -1,9 +1,11 @@
-function trainReducer(state, action){
+function Trains(state={}, action){
   switch (action.type) {
     case 'CREATE_TRAIN':
-      return Object.assign({}, state, {
-        Trains: action.train
-      })
+      let sample = Object.assign({}, state, action.Trains)
+      console.log('STATE', state)
+      console.log('ACTION.TRAIN', action.Trains)
+      console.log('SAMPLE', sample)
+      return sample
       break;
     case 'OFFBOARD_TRAIN':
 
@@ -19,9 +21,10 @@ function trainReducer(state, action){
       break;
     default:
       return state
+      break;
   }
 }
 
 module.exports = {
-  trainReducer
+  Trains
 }
