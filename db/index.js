@@ -41,15 +41,35 @@ const typeToAssociations = {
 
 db.update = (type, data, callback) => {
   data = data || {id: undefined}
-  const updateFields = getFields(type)
+  // console.log("IM BROKEN HERE:", getFields);
+  // const updateFields = getFields(type, data)
+  const updateFields = {associations: []}
+  if(type === 'Trains'){
+    updateFields['id'] = data.id
+    updateFields['capacity'] = data.capacity
+    updateFields['station_id'] = data.station_id
+  } else if(type === 'Passengers') {
+    updateFields['id'] = data.id
+    updateFields['name'] = data.name
+    updateFields['train_id'] = data.train_id
+    updateFields['station_id'] = data.station_id
+    updateFields['ticket_id'] = data.ticket_id
+  } else if(type === 'Tickets') {
+    updateFields['id'] = data.id
+    updateFields['destionation_id'] = data.destionation_id
+  } else {
+    updateFields['id'] = data.id
+    updateFields['location'] = data.location
+    updateFields['next_station_id'] = data.next_station_id
+  }
 
   stringToType[type].findOrCreate({where: {id: data.id}, include: typeToAssociations[type]})
   .spread( (instance, created) => {
     console.log("CREATED:", created)
     instance.update(updateFields)
       .then( result => {
-        data.id = result.dataValues.id
-        callback(result)
+        // data.id = result.dataValues.id
+        callback(result.dataValues)
       })
   })
 }

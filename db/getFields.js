@@ -1,4 +1,4 @@
-const getFields = type => {
+const getFields = (type, data) => {
   const updateFields = {associations: []}
   if(type === 'Trains'){
     updateFields['id'] = data.id

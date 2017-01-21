@@ -1,11 +1,19 @@
 const defaultOptions = {id: undefined, capacity: 0, passnegers: [], currentStation: 0}
+const {store} = require('../')
 
-export default class Train{
+class Train{
   constructor(options=defaultOptions){
     this._id = options.id,
     this.capacity = options.capacity,
     this.passengers = options.passengers,
     this._currentStation = options.currentStation
+
+    const newTrains = store.getState().trains.splice()
+    newTrains.push(this)
+
+    store.dispatch({type: 'CREATE_TRAIN', trains: newTrains})
+    // Call create_train action
+
   }
 
 // get the number of a particular train.
@@ -73,4 +81,8 @@ export default class Train{
   delete(){
     db.delete('Trains', this.id)
   }
+}
+
+module.exports = {
+  Train
 }

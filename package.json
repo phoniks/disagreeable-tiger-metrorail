@@ -6,7 +6,8 @@
   "main": "index.js",
   "dependencies": {
     "knex": "^0.12.6",
-    "pg": "^6.1.2"
+    "pg": "^6.1.2",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "util": "^0.10.3"
